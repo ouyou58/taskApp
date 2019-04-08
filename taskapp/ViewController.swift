@@ -16,7 +16,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     @IBOutlet weak var searchBar: UISearchBar!
     
     let realm = try! Realm()
-    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "category", ascending: false)
+    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,9 +111,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         if (searchBar.text?.count)! > 0 {
             let predicate = NSPredicate(format: "SELF.category CONTAINS[x] %@", searchBar.text!)
-            taskArray = taskArray.filter(predicate)
+            //taskArray = taskArray.filter(predicate)
+            taskArray = try! Realm().objects(Task.self).filter(predicate)
         } else {
-            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "category", ascending: false)
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
         }
         tableview.reloadData()
     }
